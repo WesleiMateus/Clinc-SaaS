@@ -1,9 +1,8 @@
 import { Button } from "@/components/ui/button";
+import AuthenticationPage from "./auth/page";
 
-export default function Home() {
-  return (
-    <div className="p-5 ">
-      <Button>Bootcamp Clinic</Button>
-    </div>
-  );
-}
+const PaginaQualquer = () => {
+  return <div></div>;
+};
+
+export default PaginaQualquer;
