@@ -14,7 +14,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -48,7 +47,7 @@ const LoginPage = () => {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Seja bem vindo novamente!</CardTitle>
+        <CardTitle>Seja Bem Vindo!</CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
         <Form {...form}>
@@ -71,7 +70,7 @@ const LoginPage = () => {
               name="password"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Defina uma senha</FormLabel>
+                  <FormLabel>Senha</FormLabel>
                   <FormControl>
                     <Input
                       type="password"
