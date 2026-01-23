@@ -33,7 +33,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { authClient } from "@/lib/auth-client";
-import { redirect, useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
@@ -42,22 +42,22 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 const items = [
   {
     title: "Dashboard",
-    url: "#",
+    url: "/dashboard",
     icon: LayoutDashboard,
   },
   {
     title: "Agendamentos",
-    url: "#",
+    url: "/appointments",
     icon: CalendarDays,
   },
   {
     title: "Medicos",
-    url: "#",
+    url: "/doctors",
     icon: Stethoscope,
   },
   {
     title: "Pacientes",
-    url: "#",
+    url: "/patients",
     icon: UserRoundSearch,
   },
 ];
@@ -71,9 +71,9 @@ const planos = [
 ];
 
 export function AppSidebar() {
-  const session = authClient.useSession();
-
   const router = useRouter();
+  const session = authClient.useSession();
+  const pathName = usePathname()
 
   const handleSingOut = async () => {
     await authClient.signOut({
@@ -102,7 +102,7 @@ export function AppSidebar() {
             <SidebarMenu>
               {items.map((item) => (
                 <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild>
+                  <SidebarMenuButton asChild isActive={pathName === item.url}>
                     <Link href={item.url}>
                       <item.icon />
                       <span>{item.title}</span>
