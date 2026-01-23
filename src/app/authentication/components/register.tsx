@@ -16,6 +16,7 @@ import {
 } from "@/components/ui/form";
 import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 const registerSchema = z.object({
   name: z.string().trim().min(1, { message: "Nome é obrigatório" }),
@@ -52,6 +53,13 @@ const RegisterPage = () => {
       {
         onSuccess: () => {
           router.push("/dashboard");
+        },
+        onError: (err) => {
+          if (err.error.code === "USER_ALREADY EXISTS") {
+            toast.error("Email já cadastrado!");
+            return
+          }
+          toast.error("Erro ao criar a conta!");
         },
       },
     );
