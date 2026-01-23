@@ -4,7 +4,7 @@ import LoginPage from "./components/login";
 
 const AuthenticationPage = () => {
   return (
-    <div className="w-full h-screen flex items-center justify-center">
+    <div className="w-full h-screen flex items-center justify-center bg-blue-950 dark">
       <Tabs defaultValue="login" className="w-110">
         <TabsList className="grid w-full grid-cols-2">
           <TabsTrigger value="login">Login</TabsTrigger>

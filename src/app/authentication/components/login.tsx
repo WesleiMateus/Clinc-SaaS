@@ -1,11 +1,6 @@
 "use client";
 
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import * as z from "zod";
@@ -19,6 +14,12 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { auth } from "@/lib/auth";
+import { authClient } from "@/lib/auth-client";
+import { router } from "better-auth/api";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
+import { Loader2 } from "lucide-react";
 
 const loginSchema = z.object({
   email: z
@@ -33,6 +34,8 @@ const loginSchema = z.object({
 });
 
 const LoginPage = () => {
+  const router = useRouter();
+
   const form = useForm<z.infer<typeof loginSchema>>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
@@ -41,8 +44,21 @@ const LoginPage = () => {
     },
   });
 
-  function onSubmit(data: z.infer<typeof loginSchema>) {
-    console.log(data);
+  async function onSubmit(data: z.infer<typeof loginSchema>) {
+    await authClient.signIn.email(
+      {
+        email: data.email,
+        password: data.password,
+      },
+      {
+        onSuccess: () => {
+          router.push("/dashboard");
+        },
+        onError: (error) => {
+          toast.error("Email ou senha inválidos!");
+        },
+      },
+    );
   }
   return (
     <Card>
@@ -82,8 +98,16 @@ const LoginPage = () => {
                 </FormItem>
               )}
             />
-            <Button type="submit" className="w-full">
-              Entrar
+            <Button
+              type="submit"
+              className="w-full"
+              disabled={form.formState.isSubmitting}
+            >
+              {form.formState.isSubmitting ? (
+                <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+              ) : (
+                "Entrar"
+              )}
             </Button>
           </form>
         </Form>
