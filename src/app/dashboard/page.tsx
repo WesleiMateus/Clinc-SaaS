@@ -1,7 +1,24 @@
-const dashboardPage = () => {
-  return ( 
-    <div>PAGINA HOME</div>
-   );
-}
- 
+import { auth } from "@/lib/auth";
+import { headers } from "next/headers";
+import SignOutButton from "./components/button-sign-out";
+import { redirect } from "next/navigation";
+
+const dashboardPage = async () => {
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
+
+  if (!session?.user) {
+    redirect("/authentication")
+  }
+
+  return (
+    <div>
+      <h1>{session?.user?.name}</h1>
+      <h1>{session?.user?.email}</h1>
+      <SignOutButton />
+    </div>
+  )
+};
+
 export default dashboardPage;
