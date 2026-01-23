@@ -2,6 +2,7 @@
 
 import {
   CalendarDays,
+  EllipsisVertical,
   Gem,
   LayoutDashboard,
   LogOut,
@@ -20,6 +21,7 @@ import {
   SidebarMenuItem,
   SidebarHeader,
   SidebarFooter,
+  SidebarMenuSubButton,
 } from "@/components/ui/sidebar";
 import Link from "next/link";
 import Image from "next/image";
@@ -31,7 +33,10 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { authClient } from "@/lib/auth-client";
-import { useRouter } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
+import { auth } from "@/lib/auth";
+import { headers } from "next/headers";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 
 // Menu items.
 const items = [
@@ -66,6 +71,8 @@ const planos = [
 ];
 
 export function AppSidebar() {
+  const session = authClient.useSession();
+
   const router = useRouter();
 
   const handleSingOut = async () => {
@@ -129,11 +136,19 @@ export function AppSidebar() {
           <SidebarMenuItem>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button>Clínica</Button>
+                <SidebarMenuSubButton className="h-15">
+                  <Avatar>
+                    <AvatarFallback>F</AvatarFallback>
+                  </Avatar>
+                  <div>
+                    <p className="text-sm">{session.data?.user?.clinic?.name}</p>
+                    <p className="text-muted-foreground text-sm">{session.data?.user?.email}</p>
+                  </div>
+                </SidebarMenuSubButton>
               </DropdownMenuTrigger>
               <DropdownMenuContent>
                 <DropdownMenuItem onClick={handleSingOut}>
-                  <LogOut />
+                  <EllipsisVertical />
                   Sair
                 </DropdownMenuItem>
               </DropdownMenuContent>
