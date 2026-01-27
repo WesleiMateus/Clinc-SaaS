@@ -1,4 +1,3 @@
-import { Button } from "@/components/ui/button";
 import {
   PageActions,
   PageContainer,
@@ -9,9 +8,9 @@ import {
   PageTitle,
 } from "@/components/ui/page-container";
 import { auth } from "@/lib/auth";
-import { Plus } from "lucide-react";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
+import AddDoctorButton from "./_components/add-doctor-btn";
 
 const DoctorsPage = async () => {
 
@@ -35,10 +34,7 @@ const DoctorsPage = async () => {
           <PageDescription>Gerenciamento de Médicos</PageDescription>
         </PageHeaderContent>
         <PageActions>
-          <Button>
-            <Plus />
-            Adicionar Médicos
-          </Button>
+          <AddDoctorButton />
         </PageActions>
       </PageHeader>
       <PageContent>
