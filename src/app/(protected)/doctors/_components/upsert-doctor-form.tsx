@@ -29,6 +29,9 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { medicalSpecialties } from "../_constants";
+import { toast } from "sonner";
+import { useAction } from "next-safe-action/hooks";
+import { upsertDoctor } from "@/actions/upsert-doctor";
 
 const formSchema = z
   .object({
@@ -76,8 +79,25 @@ const UpsertDoctorForm = () => {
     },
   });
 
-  const onSubmit = (data: z.infer<typeof formSchema>) => {
-    console.log(data);
+  const upsertDoctorAction = useAction(upsertDoctor, {
+    onSuccess: () => {
+      toast.success("Médico adicionado com sucesso.");
+      // onSuccess?.();
+    },
+    onError: (error) => {
+      toast.error("Erro ao adicionar médico.");
+      console.log(error)
+    },
+  });
+
+  const onSubmit = (values: z.infer<typeof formSchema>) => {
+    upsertDoctorAction.execute({
+      ...values,
+      // id: doctor?.id,
+      availableFromWeekDay: parseInt(values.availableFromWeekDay),
+      availableToWeekDay: parseInt(values.availableToWeekDay),
+      appointmentPriceInCents: values.appointmentPrice * 100,
+    });
   };
 
   return (
@@ -368,7 +388,9 @@ const UpsertDoctorForm = () => {
             )}
           />
           <DialogFooter>
-            <Button type="submit">Adicionar</Button>
+            <Button type="submit" disabled={upsertDoctorAction.isPending}>
+              Adicionar
+            </Button>
           </DialogFooter>
         </form>
       </Form>
